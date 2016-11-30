@@ -22,10 +22,14 @@ find_package(MOAB REQUIRED)
 include_directories(${MOAB_INCLUDE_DIRS})
 
 set(SRC
+    iGeom_test.cpp
+    iGeom_test.hpp
+    iGeom_funcs.cpp
+    iGeom_funcs.hpp
     MyPlugin.cpp
     MyPlugin.hpp
     DAGMCExportCommand.cpp
     DAGMCExportCommand.hpp)
 
-add_library(dagmc_export_plugin MODULE ${SRC})
-target_link_libraries(dagmc_export_plugin cubiti cubit_util cubit_geom ${MOAB_LIBRARIES})
+add_library(igeom_test MODULE ${SRC})
+target_link_libraries(igeom_test cubiti cubit_util cubit_geom ${MOAB_LIBRARIES})

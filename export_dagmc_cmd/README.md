@@ -1,7 +1,11 @@
+=======
+# DAGMC-Trelis
+Plugins and command extensions for Trelis
+=======
 ```
 mkdir bld
 cd bld
-cmake .. -DCMAKE_PREFIX_PATH=/path/to/Trelis-16.0/bin -DCMAKE_INSTALL_BINARY_DIR=bin -DMOAB_DIR=/path/to/MOAB/lib
+cmake .. -DCMAKE_PREFIX_PATH=/path/to/Trelis-16.0/bin -DCMAKE_INSTALL_BINARY_DIR=bin -DMOAB_DIR=/path/to/MOAB/lib -D_GLIBCXX_USE_CXX11_ABI=0
 make
 ```
 

@@ -2,13 +2,14 @@ project(SvalinnCommandPlugin)
 
 cmake_minimum_required(VERSION 3.0)
 
-# Build options
+# Define build options
 option(UPDATE_SUBMODULES    "Automatically update git submodules" ON)
 option(BUILD_DAGMC_EXPORTER "Include DagMC export capability"     ON)
 option(BUILD_MCNP_IMPORTER  "Include MCNP import capability"      ON)
 option(BUILD_IGEOM          "Build iGeom library"                 ON)
 option(BUILD_IGEOM_TESTS    "Include tests for iGeom"             ON)
 
+### Process Build Options
 # MCNP importer and iGeom tests require iGeom
 if (BUILD_MCNP_IMPORTER OR BUILD_IGEOM_TESTS)
   set(BUILD_IGEOM ON)
@@ -29,19 +30,11 @@ endif()
 # Use C++11
 set(CMAKE_CXX_STANDARD 11)
 
-# Find Cubit
-if (NOT CUBIT_ROOT)
-  message(FATAL_ERROR "CUBIT_ROOT not specified")
-endif ()
-list(APPEND CMAKE_PREFIX_PATH ${CUBIT_ROOT}/bin)
+### Find Cubit
 find_package(Cubit REQUIRED CONFIG)
-include_directories(${CUBIT_INCLUDE_DIRS})
-link_directories(${Cubit_DIR})
-set(CUBIT_LIBS cubiti19 cubit_geom cubit_util)
-message(STATUS "Cubit_DIR: ${Cubit_DIR}")
-message(STATUS "CUBIT_INCLUDE_DIRS: ${CUBIT_INCLUDE_DIRS}")
+set(CUBIT_LIBS cubiti cubit_geom cubit_util)
 
-# Setup RPATH
+# Setup RPATH to better bind library dependencies
 if (NOT CMAKE_INSTALL_RPATH)
   set(CMAKE_INSTALL_RPATH ${Cubit_DIR} ${Cubit_DIR}/plugins/svalinn)
 endif ()
@@ -70,6 +63,7 @@ if (BUILD_DAGMC_EXPORTER)
   find_package(DAGMC REQUIRED CONFIG PATHS ${DAGMC_DIR}/lib/cmake)
   link_directories(${DAGMC_LIBRARY_DIRS})
   include_directories(${DAGMC_INCLUDE_DIRS})
+
   message(STATUS "DAGMC_LIBRARIES: ${DAGMC_LIBRARIES}")
   message(STATUS "DAGMC_LIBRARY_DIRS: ${DAGMC_LIBRARY_DIRS}")
   message(STATUS "DAGMC_INCLUDE_DIRS: ${DAGMC_INCLUDE_DIRS}")
@@ -85,7 +79,7 @@ if (BUILD_IGEOM)
   include_directories(iGeom)
   add_library(iGeom SHARED ${IGEOM_SRC_FILES})
   target_link_libraries(iGeom ${CUBIT_LIBS})
-   target_include_directories(iGeom PUBLIC
+  target_include_directories(iGeom PUBLIC
                               $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
   install(TARGETS iGeom LIBRARY DESTINATION lib)
   list(APPEND PLUGIN_LINK_LIBS iGeom)

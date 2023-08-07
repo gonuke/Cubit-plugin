@@ -34,7 +34,7 @@ jobs:
       matrix:
         cubit: [2023.8-dev]
         os: [ubuntu]
-        os_version: [22.04]
+        os_version: [20.04]
 
     name: 'Cubit ${{ matrix.cubit }} Build for ${{ matrix.os }} ${{ matrix.os_version }} of Svalinn Plugin'
 

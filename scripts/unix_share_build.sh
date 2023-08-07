@@ -110,7 +110,7 @@ function linux_build_hdf5() {
         git clone https://github.com/HDFGroup/hdf5.git -b hdf5-1_12_0 --depth 1 --shallow-submodules
         cd bld
         cmake ../hdf5 -DBUILD_SHARED_LIBS:BOOL=ON
-        make
+        make -j 4
         $SUDO make install
     fi
 }
@@ -138,7 +138,7 @@ function build_moab() {
             -DENABLE_FORTRAN=OFF \
             $CMAKE_ADDITIONAL_FLAGS \
             -DCMAKE_INSTALL_PREFIX=${PLUGIN_ABS_PATH}/moab
-    make
+    make -j 4
     make install
     cd ../..
     rm -rf moab/moab moab/bld
@@ -163,7 +163,7 @@ function build_dagmc(){
                 $CMAKE_ADDITIONAL_FLAGS \
                 -DCMAKE_INSTALL_PREFIX=${PLUGIN_ABS_PATH}/DAGMC
 
-    make
+    make -j 4
     make install
     cd ../..
     rm -rf DAGMC/DAGMC DAGMC/bld
@@ -263,7 +263,7 @@ function build_plugin(){
                            -DCMAKE_BUILD_TYPE=Release \
                             $CMAKE_ADDITIONAL_FLAGS \
                            -DCMAKE_INSTALL_PREFIX=${PLUGIN_ABS_PATH}
-    make -j$PROC
+    make -j 4
     make install
 }
 
